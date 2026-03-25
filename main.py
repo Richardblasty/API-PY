@@ -36,7 +36,19 @@ def home():
 @app.route('/destinations',methods=['GET'])
 def get_destinations():
     destinations = Destination.query.all()
-    return jsonify([destination.to_dict() for destination in destinations])
+
+    return jsonify([destination.to_dict()] for destination in destinations)
+
+
+@app.route('/destinations/<int:destination_id>', methods=['POST'])
+def create_destination(destination_id):
+    destination = Destination.query.get(destination_id)
+    if destination:
+        return jsonify(destination.to_dict())
+    else:
+        return jsonify({'error':'Destination not found'}), 404
+
+
 
 
 if __name__ == '__main__':
